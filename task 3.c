@@ -1,11 +1,18 @@
 #include <stdio.h>
 #include <stdilib.h>
 #include <string.h>
-//#
+
+typedef struct OWN{
+	
+	float element;
+	struct OWN *next;
+	
+}OWN;//step by step 
 
 typedef struct{
 	
-	// [] or 2;
+	OWN *first_element;
+	OWN *current_element;
 	
 }LOWL;
 
