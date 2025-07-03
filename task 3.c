@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdilib.h>
+#include <stdlib.h>
 #include <string.h>
 #define LOWL_FILE_PROBLEM 1
 #define LOWL_FILE_OK 0
@@ -48,7 +48,7 @@ char lowl_save(LOWL *list, char *filename){
 	
 	tmp = list->first_element;
 	while(tmp != 0){
-		if(fwrite(tmp->element,sizeof(float),1,file) != 1){
+		if(fwrite(tmp->element,sizeof(float),1,file) != 1){//incompatible type of arg?? 
 			fclose(file);
 			return LOWL_FILE_PROBLEM;
 		}
@@ -76,7 +76,7 @@ LOWL* lowl_load(char *filename){
 		return LOWL_FILE_PROBLEM;
 	}
 	
-	if(fread(check_the_lowl_2, sizeof(char), 4, file) != 4){//4 chars and writing it to ctl 2
+	if(fread(&check_the_lowl_2, sizeof(char), 4, file) != 4){//4 chars and writing it to ctl 2
 		fclose(file);
 		return LOWL_FILE_PROBLEM;
 	}
@@ -113,5 +113,9 @@ LOWL* lowl_load(char *filename){
 
 	}
 	
+	free(tmp);
+	fclose(file);
+	
+	return list;
 }
 
