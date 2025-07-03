@@ -63,6 +63,8 @@ char lowl_save(LOWL *list, char *filename){
 
 LOWL* lowl_load(char *filename){
 	
+	OWN *tmp = list->first_element;// for seek fix soon
+	OWN *previous_element = 0;
 	LOWL *list = malloc(sizeof(LOWL));
 	char check_the_lowl_2[4];
 	int count = 0;
@@ -92,11 +94,24 @@ LOWL* lowl_load(char *filename){
 	list->first_element = malloc(sizeof(OWN));
 	
 	if(list->first_element == 0){
+		free(list);
 		fclose(file);
 		return LOWL_FILE_PROBLEM;
 	}
 	
-	
+	while(fread(tmp->element,sizeof(float),1,file) == 1){
+		tmp->next = malloc(sizeof(OWN));
+		if(tmp->next == previous_element){
+			tmp = list->first_element;
+			while(tmp != 0){
+				tmp = tmp->next;
+				free(tmp);
+			}
+			free(list);
+			fclose(file);
+		}
+
+	}
 	
 }
 
