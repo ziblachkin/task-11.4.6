@@ -59,5 +59,29 @@ char lowl_save(LOWL *list, char *filename){
 	return LOWL_FILE_OK; 
 }
 
-//LOWL* lowl_load(char *filename);
+
+
+LOWL* lowl_load(char *filename){
+	
+	char check_the_lowl_2[4];
+	int count = 0;
+	
+	FILE *file = fopne(filename, "rb");
+	
+	if(file == 0){
+		fclose(file);
+		return LOWL_FILE_PROBLEM;
+	}
+	
+	if(fread(check_the_lowl_2, sizeof(char), 4, file) != 4){
+		fclose(file);
+		return LOWL_FILE_PROBLEM;
+	}
+	
+	if(strcmp(check_the_lowl_2, "LOWL") != 0){//check same name
+		fclose(file);
+		return LOWL_FILE_PROBLEM;
+	}
+	
+}
 
