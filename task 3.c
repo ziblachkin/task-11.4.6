@@ -48,7 +48,7 @@ char lowl_save(LOWL *list, char *filename){
 	
 	tmp = list->first_element;
 	while(tmp != 0){
-		if(fwrite(tmp->element,sizeof(float),1,file) != 1){//incompatible type of arg?? 
+		if(fwrite(&tmp->element,sizeof(float),1,file) != 1){//incompatible type of arg?? 
 			fclose(file);
 			return LOWL_FILE_PROBLEM;
 		}
@@ -63,6 +63,7 @@ char lowl_save(LOWL *list, char *filename){
 
 LOWL* lowl_load(char *filename){
 	
+	int i = 0;
 	OWN *tmp = list->first_element;// for seek fix soon
 	OWN *previous_element = 0;
 	LOWL *list = malloc(sizeof(LOWL));
@@ -111,6 +112,12 @@ LOWL* lowl_load(char *filename){
 			fclose(file);
 		}
 
+	}
+	
+	list->current_element = list->first_element;
+	
+	for(i = 0; i < count; i++){
+		list->current_element = list->current_element->next;
 	}
 	
 	free(tmp);
