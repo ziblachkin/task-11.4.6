@@ -20,10 +20,18 @@ typedef struct{
 
 char lowl_save(LOWL *list, char *filename){
 
+	int count = 0;
+	OWN *tmp = list->first_element;
+	
 	FILE *file = fopen(filename,"wb");
 
 	if(file == 0){
 		return LOWL_FILE_PROBLEM;
+	}
+	
+	while(tmp != list->current_element){
+		count ++;
+		tmp = tmp->next;
 	}
 	
 	//LOWL_FILE_OK 
