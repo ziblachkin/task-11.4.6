@@ -19,9 +19,11 @@ typedef struct{
 }LOWL;
 
 char lowl_save(LOWL *list, char *filename){
-
+	
+	const char *check_the_lowl = "LOWL"; 
 	int count = 0;
 	OWN *tmp = list->first_element;
+	
 	
 	FILE *file = fopen(filename,"wb");
 
@@ -32,6 +34,16 @@ char lowl_save(LOWL *list, char *filename){
 	while(tmp != list->current_element){
 		count ++;
 		tmp = tmp->next;
+	}
+	
+	if(fwrite(check_the_lowl, sizeof(char), 4, file) != 4){//L O W L
+		fclose(file);
+		return LOWL_FILE_PROBLEM;
+	}
+	
+	if(fwrite(count, sizeof(int), 1, file) != 1){//check posledovatelnost: L O W L, int/count(1), then elements
+		fclose(file);
+		return LOWL_FILE_PROBLEM;
 	}
 	
 	//LOWL_FILE_OK 
