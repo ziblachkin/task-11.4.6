@@ -46,11 +46,18 @@ char lowl_save(LOWL *list, char *filename){
 		return LOWL_FILE_PROBLEM;
 	}
 	
-	//LOWL_FILE_OK 
-
-	//LOWL* lowl_load(char *filename);
+	tmp = list->first_element;
+	while(tmp != 0){
+		if(fwrite(tmp->element,sizeof(float),1,file) != 1){
+			fclose(file);
+			return LOWL_FILE_PROBLEM;
+		}
+		tmp = tmp->next;
+	}
 	
+	fclose(file);
+	return LOWL_FILE_OK; 
 }
 
-
+//LOWL* lowl_load(char *filename);
 
