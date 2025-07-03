@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdilib.h>
 #include <string.h>
+#define LOWL_FILE_PROBLEM 1
+#define LOWL_FILE_OK 0
 
 typedef struct OWN{
 	
