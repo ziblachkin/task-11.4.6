@@ -89,6 +89,13 @@ LOWL* lowl_load(char *filename){
 		return LOWL_FILE_PROBLWM;
 	}
 	
+	list->first_element = malloc(sizeof(OWN));
+	
+	if(list->first_element == 0){
+		fclose(file);
+		return LOWL_FILE_PROBLEM;
+	}
+	
 	
 	
 }
