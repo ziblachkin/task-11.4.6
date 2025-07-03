@@ -63,6 +63,7 @@ char lowl_save(LOWL *list, char *filename){
 
 LOWL* lowl_load(char *filename){
 	
+	LOWL *list = malloc(sizeof(LOWL));
 	char check_the_lowl_2[4];
 	int count = 0;
 	
@@ -73,7 +74,7 @@ LOWL* lowl_load(char *filename){
 		return LOWL_FILE_PROBLEM;
 	}
 	
-	if(fread(check_the_lowl_2, sizeof(char), 4, file) != 4){
+	if(fread(check_the_lowl_2, sizeof(char), 4, file) != 4){//4 chars and writing it to ctl 2
 		fclose(file);
 		return LOWL_FILE_PROBLEM;
 	}
@@ -82,6 +83,13 @@ LOWL* lowl_load(char *filename){
 		fclose(file);
 		return LOWL_FILE_PROBLEM;
 	}
+	
+	if(list == 0){
+		fclose(file);
+		return LOWL_FILE_PROBLWM;
+	}
+	
+	
 	
 }
 
