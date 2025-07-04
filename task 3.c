@@ -64,7 +64,7 @@ char lowl_save(LOWL *list, char *filename){
 LOWL* lowl_load(char *filename){
 	
 	int i = 0;
-	OWN *previous_element = 0;
+	//OWN *previous_element = 0; use at the end of the days) 
 	LOWL *list = malloc(sizeof(LOWL));
 	OWN *tmp = list->first_element;
 	char check_the_lowl_2[4];
