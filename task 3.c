@@ -24,7 +24,6 @@ char lowl_save(LOWL *list, char *filename){
 	int count = 0;
 	OWN *tmp = list->first_element;
 	
-	
 	FILE *file = fopen("list.check","wb");
 
 	if(file == 0){
@@ -79,25 +78,25 @@ LOWL* lowl_load(char *filename){
 	if(file == 0){
 		printf("here 1");
 		fclose(file);
-		return LOWL_FILE_PROBLEM;
+		return NULL;
 	}
 	
 	if(fread(&check_the_lowl_2, sizeof(char), 4, file) != 4){//4 chars and writing it to ctl 2
 		printf("here 2");
 		fclose(file);
-		return LOWL_FILE_PROBLEM;
+		return NULL;
 	}
 	
 	if(strcmp(check_the_lowl_2, "LOWL") != 0){//check same name
 		printf("here 3");
 		fclose(file);
-		return LOWL_FILE_PROBLEM;
+		return NULL;
 	}
 	
 	if(list == 0){
 		printf("here 3");
 		fclose(file);
-		return LOWL_FILE_PROBLEM;
+		return NULL;
 	}
 	
 	
@@ -105,7 +104,7 @@ LOWL* lowl_load(char *filename){
 		printf("here 4");
 		free(list);
 		fclose(file);
-		return LOWL_FILE_PROBLEM;
+		return NULL;
 	}
 	
 	printf("col 111 is going good\n");
@@ -136,7 +135,7 @@ LOWL* lowl_load(char *filename){
 	free(tmp);
 	fclose(file);
 		
-	//return list;
+	return list;
 }
 
 int main(){
@@ -172,6 +171,8 @@ int main(){
  	
  	printf("had been saved\n");
  	
+ 	printf("going to load\n");
+ 	
  	LOWL *list_load = lowl_load("list.check");
     if(list_load == 0){
         return 1;
@@ -179,7 +180,6 @@ int main(){
     }
     
     printf("had been loaded");
-
     
 //    if(&list_load == 0){// also don't write
 //        return 1;
