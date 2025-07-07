@@ -3,7 +3,8 @@
 #include <string.h>
 #define LOWL_FILE_PROBLEM 1
 #define LOWL_FILE_OK 0
-
+#define BOUNDARY_REACHED 1
+#define LOWL_SUCCESS 0
 
 typedef struct OWN{
 	float data;
@@ -32,15 +33,51 @@ LOWL *lowl_create_empty(void){
 	return list;
 }
 
-LOWL *lowl_create_random(unsigned int size);
+
+LOWL *lowl_create_random(unsigned int size){
+	
+}
+
+char lowl_cur_step_left(LOWL *list){
+	OWN *tmp = list->beg;
+	
+	if(list == 0){
+		return 	BOUNDARY_REACHED;//has put us then in dif. mb sw
+	}
+	
+	while(tmp->next != list->cur){
+		tmp = tmp->next;
+	}
+	
+	if(tmp == 0){
+		return 	BOUNDARY_REACHED;
+	}
+	list->cur = tmp;
+	
+	return LOWL_SUCCESS;
+	
+}
+
+char lowl_cur_step_right(LOWL *list){
+	
+	if(list == 0){
+		return 	BOUNDARY_REACHED;
+	}
+	
+	list->cur = list->cur->next;
+	
+	return LOWL_SUCCESS;
+	
+}
+
+
+
 
 void lowl_destroy(LOWL *list);
 
 void lowl_print(LOWL *list);
 
-char lowl_cur_step_left(LOWL *list);
 
-char lowl_cur_step_right(LOWL *list);
 
 
 OWN *lowl_insert_left(LOWL* list, float val);
