@@ -19,7 +19,18 @@ typedef struct{
 
 
 
-LOWL *lowl_create_empty(void);
+LOWL *lowl_create_empty(void){
+	LOWL *list = malloc(sizeof(LOWL));
+	
+	if(list==0){//chanhe from adress to better check
+		return LOWL_FILE_PROBLEM;
+	}
+	
+	list->beg = 0;
+	list->cur = 0;
+	
+	return list;
+}
 
 LOWL *lowl_create_random(unsigned int size);
 
