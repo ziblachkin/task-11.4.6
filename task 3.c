@@ -64,7 +64,41 @@ OWN *lowl_insert_left(LOWL* list, float val){
 	
 }
 
-OWN *lowl_insert_right(LOWL* list, float val);
+OWN *lowl_insert_right(LOWL* list, float val){
+	
+	OWN *linked_list = malloc(sizeof(OWN));
+	
+	linked_list->data = val;
+	
+	if(linked_list == 0){
+		return 0;
+	}
+	
+	if(list == 0){
+		return 0;
+	}
+	
+	if(list->beg == 0){
+		list->beg = linked_list;
+		list->cur = linked_list;
+		
+		return linked_list;
+	}
+	
+	if(list->cur == 0){
+		free(linked_list);
+		return 0;
+	
+	}
+	
+	linked_list->next = list->cur->next;
+	
+	list->cur->next = linked_list;
+	list->cur = linked_list;
+	
+	return linked_list;
+	
+}
 
 
 LOWL *lowl_create_empty(void){
