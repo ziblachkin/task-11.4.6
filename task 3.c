@@ -6,6 +6,8 @@
 #define BOUNDARY_REACHED 1
 #define LOWL_SUCCESS 0
 
+//need load, posled 
+
 typedef struct OWN{
 	float data;
 	struct OWN *next;
@@ -34,7 +36,24 @@ LOWL *lowl_create_empty(void){
 }
 
 
-LOWL *lowl_create_random(unsigned int size){
+LOWL *lowl_create_random(unsigned int size){//make it write in, prob w insert
+	
+	LOWL *list = lowl_create_empty();
+	
+	int i = 0;
+	
+	if(list == 0){//uns
+		return LOWL_FILE_PROBLEM;
+	}
+	//srand in main
+	
+	for(i = 0; i<size; i++){
+		
+	}
+	
+}
+
+char lowl_save(LOWL *list, char *filename){
 	
 }
 
@@ -89,3 +108,12 @@ char lowl_delete(LOWL* list)
 
 LOWL_OK
 LOWL_FAIL
+
+
+int main(){
+	
+	
+	srand(time(NULL));
+	
+	
+}
