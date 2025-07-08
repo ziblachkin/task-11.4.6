@@ -3,6 +3,7 @@
 #include <string.h>
 #define LOWL_FILE_PROBLEM 1
 #define LOWL_FILE_OK 0
+#define LOWL_FILE_FAIL 1//needed fail
 #define BOUNDARY_REACHED 1
 #define LOWL_SUCCESS 0
 
@@ -19,14 +20,58 @@ typedef struct{
 }LOWL;
 
 
+OWN *lowl_insert_left(LOWL* list, float val){
+	
+	OWN *tmp = list->beg
+	OWN *linked_list = malloc(sizeof(OWN));
+	
+	if(linked_list == 0){
+		return 0;// pointer return a fail
+	}
+	
+	if(list == 0){
+		return 0;// pointer return a fail
+	}
+	
+	linked_list->data = val;
+	
+	if(list->beg == 0){
+		list->beg = linked_list;
+		list->cur = linked_list;
+		return linked_list;
+	}
+	
+	if(list->cur == 0){
+		list->beg = linked_list;
+		list->cur = linked_list;
+		return linked_list;
+	}
+	
+	while(tmp->next != list->cur){
+		tmp = tmp->next;
+	}
+	
+	if(tmp == 0){
+		free(linked_list);//after that probl cuz 4 now it's 0
+		return 0;
+	}
+	
+	tmp->next = linked_list;
+	linked_list->next = list->cur;//linked l smth, up ans
+	list->cur = linked_list;
+	
+	return linked_list;
+	
+}
 
+OWN *lowl_insert_right(LOWL* list, float val);
 
 
 LOWL *lowl_create_empty(void){
 	LOWL *list = malloc(sizeof(LOWL));
 	
 	if(list==0){//chanhe from adress to better check
-		return LOWL_FILE_PROBLEM;
+		return 0;
 	}
 	
 	list->beg = 0;
@@ -97,17 +142,9 @@ void lowl_destroy(LOWL *list);
 void lowl_print(LOWL *list);
 
 
-
-
-OWN *lowl_insert_left(LOWL* list, float val);
-
-OWN *lowl_insert_right(LOWL* list, float val);
-
-
 char lowl_delete(LOWL* list)
 
-LOWL_OK
-LOWL_FAIL
+
 
 
 int main(){
