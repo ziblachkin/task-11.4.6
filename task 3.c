@@ -115,10 +115,11 @@ LOWL *lowl_create_empty(void){
 }
 
 
-LOWL *lowl_create_random(unsigned int size){//make it write in, prob w insert
+LOWL *lowl_create_random(unsigned int size){//make it write in, prob w insert//if free right
 	
 	LOWL *list = lowl_create_empty();
 	
+	float val = 0;
 	int i = 0;
 	
 	if(list == 0){//uns
@@ -127,8 +128,14 @@ LOWL *lowl_create_random(unsigned int size){//make it write in, prob w insert
 	//srand in main
 	
 	for(i = 0; i<size; i++){
-		
+		val = (float)(rand() % 2000) / 10.0 - 100.0;
+		if(lowl_insert_right(list, val) == 0){
+			free(list);
+			return 0;
+		}
 	}
+	
+	return list;
 	
 }
 
