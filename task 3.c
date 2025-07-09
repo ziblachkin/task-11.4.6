@@ -138,10 +138,6 @@ LOWL *lowl_create_random(unsigned int size){//make it write in, prob w insert//i
 	
 }
 
-char lowl_save(LOWL *list, char *filename){
-	
-}
-
 char lowl_cur_step_left(LOWL *list){
 	OWN *tmp = list->beg;
 	
@@ -195,13 +191,41 @@ void lowl_destroy(LOWL *list){
 	
 }
 
-void lowl_print(LOWL *list);
+void lowl_print(LOWL *list){
+	
+	OWN *tmp = list->beg;
+	
+	if(list == 0){
+		return 0;
+	}
+	
+	while(tmp != 0){
+		printf("%.2f \n", tmp->data);
+		tmp = tmp->next;
+	}
+	
+}
 
+char lowl_delete(LOWL* list){
+	
+	OWN *delete_data = list->cur;
+	
+	if(list == 0){
+		return 0;
+	}
+	
+	if(list->cur == list->beg){
+		list->beg = list->cur->next;
+		free()
+	}
+	
+}
 
-char lowl_delete(LOWL* list)
+char lowl_save(LOWL *list, char *filename){
+	
+}
 
-
-
+LOWL* lowl_load(char *filename);
 
 int main(){
 	
