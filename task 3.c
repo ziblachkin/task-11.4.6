@@ -223,9 +223,51 @@ char lowl_delete(LOWL* list){
 
 char lowl_save(LOWL *list, char *filename){
 	
+	const char *check_the_lowl = "LOWL";
+	int count = 0;
+	
+	OWN *tmp = list->beg;
+	FILE *file = fopen("list.check","wb");
+	
+	if(file == 0){
+		return LOWL_FILE_PROBLEM;
+	}
+	
+	if(fwrite(check_the_lowl, sizeof(char), 4, file) != 4){//L O W L
+		fclose(file);
+		return LOWL_FILE_PROBLEM;
+	}
+	
+	if(tmp != 0){
+		while(tmp != list->cur){
+			count++;
+			tmp = tmp->next;
+		}
+	}
+	
+	if(fwrite(&count, sizeof(int), 1, file) != 1){//check posledovatelnost: L O W L, int/count(1), then elements
+		fclose(file);
+		return LOWL_FILE_PROBLEM;
+	}	
+	
+	tmp = list->beg;
+	
+	while(tmp != 0){
+		if(fwrite(tmp->data, sizeof(float), 1, file) != 1){
+			fclose(file);
+			return LOWL_FILE_PROBLEM;
+		}
+		tmp = tmp->next;
+	}
+	
+	fclose(file);
+	return LOWL_FILE_OK;
+	
 }
 
-LOWL* lowl_load(char *filename);
+LOWL* lowl_load(char *filename){
+	
+}
 
 int main(){
 	
