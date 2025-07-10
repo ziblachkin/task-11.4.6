@@ -206,7 +206,7 @@ void lowl_print(LOWL *list){
 	
 }
 
-char lowl_delete(LOWL* list){
+char lowl_delete(LOWL* list){//for cur
 	
 	OWN *delete_data = list->cur;
 	
@@ -216,8 +216,11 @@ char lowl_delete(LOWL* list){
 	
 	if(list->cur == list->beg){
 		list->beg = list->cur->next;
-		free()
+		list->cur = list->beg;
 	}
+	
+	free(to_delete);
+	return LOWL_FILE_OK;
 	
 }
 
@@ -267,12 +270,63 @@ char lowl_save(LOWL *list, char *filename){
 
 LOWL* lowl_load(char *filename){
 	
+	int count = 0;
+	char check_the_lowl_2[5] = {0};
+	float data_load;
+	
+	LOWL *list = lowl_create_empty();
+	
+	FILE *file = fopen("list.check", "rb");
+	
+	if(file == 0){
+		printf("here 1");
+		fclose(file);
+		return 0;
+	}
+	
+	if (fread(&check_the_lowl_2, sizeof(char), 4, file) != 4 || strcmp(check_the_lowl_2, "LOWL") != 0){//4 chars and writing it t
+		printf("here 2");
+		fclose(file);
+		return 0;
+	}
+	
+	if(list == 0){
+		printf("here 3");
+		fclose(file);
+		return 0;
+	}
+	
+	while(fread(data_load, sizeof(float), 1, file ) == 1){
+		if(lowl_insert_right(list, data_load) == 0){
+			lowl_destroy(list);
+			fclose(file);
+			return 0;
+		}
+	}
+	
+	fclose(file);
+	return list;
+	
 }
 
 int main(){
 	
-	
 	srand(time(NULL));
+	int for_example_num;
 	
 	
+	pritnf("how much?: ");
+	scanf("%d", &for_example_num);
+	
+	LOWL *list = lowl_create_random(for_example_num);
+	
+	if(list == 0){
+		return 1;
+	}
+	
+	
+	//print
+	
+	
+	//save, load, destroy, mb switch
 }
