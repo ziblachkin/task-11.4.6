@@ -36,7 +36,7 @@ LOWL *lowl_create_empty(void){
 
 OWN *lowl_insert_left(LOWL* list, float val){
 	
-	OWN *tmp = list->beg
+	OWN *tmp = list->beg;
 	OWN *linked_list = malloc(sizeof(OWN));
 	
 	if(linked_list == 0){
@@ -122,7 +122,7 @@ LOWL *lowl_create_random(unsigned int size){//make it write in, prob w insert//i
 	int i = 0;
 	
 	if(list == 0){//uns
-		return LOWL_FILE_PROBLEM;
+		return 0;
 	}
 	//srand in main
 	
@@ -178,7 +178,7 @@ void lowl_destroy(LOWL *list){
 	OWN *tmp = list->beg;
 	
 	if(list == 0){
-		return 0;
+		return;
 	}
 	
 	while(tmp != 0){
@@ -196,7 +196,7 @@ void lowl_print(LOWL *list){
 	OWN *tmp = list->beg;
 	
 	if(list == 0){
-		return 0;
+		return;
 	}
 	
 	while(tmp != 0){
@@ -227,7 +227,7 @@ char lowl_save(LOWL *list, char *filename){
 	int count = 0;
 	
 	OWN *tmp = list->beg;
-	FILE *file = fopen("list.check","wb");
+	FILE *file = fopen(filename,"wb");
 	
 	if(file == 0){
 		return LOWL_FILE_PROBLEM;
@@ -253,7 +253,7 @@ char lowl_save(LOWL *list, char *filename){
 	tmp = list->beg;
 	
 	while(tmp != 0){
-		if(fwrite(tmp->data, sizeof(float), 1, file) != 1){
+		if(fwrite(&tmp->data, sizeof(float), 1, file) != 1){
 			fclose(file);
 			return LOWL_FILE_PROBLEM;
 		}
