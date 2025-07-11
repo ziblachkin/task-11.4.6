@@ -219,7 +219,7 @@ char lowl_delete(LOWL* list){//for cur
 		list->cur = list->beg;
 	}
 	
-	free(to_delete);
+	free(delete_data);
 	return LOWL_FILE_OK;
 	
 }
@@ -296,7 +296,7 @@ LOWL* lowl_load(char *filename){
 		return 0;
 	}
 	
-	while(fread(data_load, sizeof(float), 1, file ) == 1){
+	while(fread(&data_load, sizeof(float), 1, file ) == 1){
 		if(lowl_insert_right(list, data_load) == 0){
 			lowl_destroy(list);
 			fclose(file);
@@ -314,8 +314,14 @@ int main(){
 	srand(time(NULL));
 	int for_example_num;
 	
+	LOWL *list_loaded = lowl_load("list_check");
 	
-	pritnf("how much?: ");
+	if(list_loaded == 0){
+		printf("here 5");
+		return 1;
+	}
+	
+	printf("how much?: ");
 	scanf("%d", &for_example_num);
 	
 	LOWL *list = lowl_create_random(for_example_num);
@@ -325,8 +331,18 @@ int main(){
 	}
 	
 	
-	//print
+	printf("List before:\n");
+	lowl_print(list);
 	
+	if(lowl_save(list, "list.check") != 0){
+		printf("here 6 mb");
+		return 1;
+	}
+	
+	printf("after: \n");
+	lowl_print(list_loaded);
+	
+	return 0;
 	
 	//save, load, destroy, mb switch
 }
