@@ -39,15 +39,17 @@ OWN *lowl_insert_left(LOWL* list, float val){
 	OWN *tmp = list->beg;
 	OWN *linked_list = malloc(sizeof(OWN));
 	
-	if(linked_list == 0){
-		return 0;// pointer return a fail
-	}
-	
 	if(list == 0){
 		return 0;// pointer return a fail
 	}
 	
+	if(linked_list == 0){
+		return 0;// pointer return a fail
+	}
+	
 	linked_list->data = val;
+	
+	linked_list->next = 0;
 	
 	if(list->beg == 0){
 		list->beg = linked_list;
@@ -61,13 +63,17 @@ OWN *lowl_insert_left(LOWL* list, float val){
 		return linked_list;
 	}
 	
-	while(tmp->next != list->cur){
-		tmp = tmp->next;
-	}
-	
 	if(tmp == 0){
 		free(linked_list);//after that probl cuz 4 now it's 0
 		return 0;
+	}
+	
+	while(tmp->next != list->cur){
+		if(tmp->next == 0){
+			free(linked_list);
+			return 0;
+		}
+		tmp = tmp->next;
 	}
 	
 	tmp->next = linked_list;
@@ -83,6 +89,8 @@ OWN *lowl_insert_right(LOWL* list, float val){
 	OWN *linked_list = malloc(sizeof(OWN));
 	
 	linked_list->data = val;
+	
+	linked_list->next = 0;
 	
 	if(linked_list == 0){
 		return 0;
@@ -145,13 +153,17 @@ char lowl_cur_step_left(LOWL *list){
 		return 	BOUNDARY_REACHED;//has put us then in dif. mb sw
 	}
 	
+	if(tmp == 0){
+		return  BOUNDARY_REACHED;
+	}
+	
 	while(tmp->next != list->cur){
+		if(tmp->next == 0){
+			return BOUNDARY_REACHED;
+		}
 		tmp = tmp->next;
 	}
 	
-	if(tmp == 0){
-		return 	BOUNDARY_REACHED;
-	}
 	list->cur = tmp;
 	
 	return LOWL_SUCCESS;
@@ -160,7 +172,7 @@ char lowl_cur_step_left(LOWL *list){
 
 char lowl_cur_step_right(LOWL *list){
 	
-	if(list == 0){
+	if(list == 0 || list->cur == 0){
 		return 	BOUNDARY_REACHED;
 	}
 	
@@ -209,6 +221,7 @@ void lowl_print(LOWL *list){
 char lowl_delete(LOWL* list){//for cur
 	
 	OWN *delete_data = list->cur;
+	OWN *tmp;
 	
 	if(list == 0){
 		return 0;
@@ -218,7 +231,16 @@ char lowl_delete(LOWL* list){//for cur
 		list->beg = list->cur->next;
 		list->cur = list->beg;
 	}
-	
+	else{
+		tmp = list->beg;
+		while(tmp != list->cur){
+			tmp = tmp->next;
+		}
+		if(tmp != 0){
+			tmp->next = list->cur->next;
+			list->cur = tmp->next;
+		}
+	}
 	free(delete_data);
 	return LOWL_FILE_OK;
 	
@@ -270,13 +292,14 @@ char lowl_save(LOWL *list, char *filename){
 
 LOWL* lowl_load(char *filename){
 	
+	int i
 	int count = 0;
 	char check_the_lowl_2[5] = {0};
 	float data_load;
 	
 	LOWL *list = lowl_create_empty();
 	
-	FILE *file = fopen("list.check", "rb");
+	FILE *file = fopen(filename, "rb");
 	
 	if(file == 0){
 		printf("here 1");
@@ -284,8 +307,13 @@ LOWL* lowl_load(char *filename){
 		return 0;
 	}
 	
-	if (fread(&check_the_lowl_2, sizeof(char), 4, file) != 4 || strcmp(check_the_lowl_2, "LOWL") != 0){//4 chars and writing it t
+	if (fread(check_the_lowl_2, sizeof(char), 4, file) != 4 || strcmp(check_the_lowl_2, "LOWL") != 0){//4 chars and writing it t
 		printf("here 2");
+		fclose(file);
+		return 0;
+	}
+	
+	if(fread(&count,sizeof(int), 1, file) != 1){
 		fclose(file);
 		return 0;
 	}
@@ -296,9 +324,14 @@ LOWL* lowl_load(char *filename){
 		return 0;
 	}
 	
-	while(fread(&data_load, sizeof(float), 1, file ) == 1){
+	for(i = 0; i < count; i++){
+		if(fread(&data_load, sizeof(float), 1, file) != 1){
+			free(list);
+			fclose(file);
+			return 0;
+		}
 		if(lowl_insert_right(list, data_load) == 0){
-			lowl_destroy(list);
+			free(list);
 			fclose(file);
 			return 0;
 		}
@@ -313,13 +346,6 @@ int main(){
 	
 	srand(time(NULL));
 	int for_example_num;
-	
-	LOWL *list_loaded = lowl_load("list_check");
-	
-	if(list_loaded == 0){
-		printf("here 5");
-		return 1;
-	}
 	
 	printf("how much?: ");
 	scanf("%d", &for_example_num);
@@ -336,6 +362,14 @@ int main(){
 	
 	if(lowl_save(list, "list.check") != 0){
 		printf("here 6 mb");
+		return 1;
+	}
+	
+	
+	LOWL *list_loaded = lowl_load("list.check");
+	
+	if(list_loaded == 0){
+		printf("here 5");
 		return 1;
 	}
 	
